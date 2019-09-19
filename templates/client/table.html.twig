@@ -1,0 +1,38 @@
+{% if clients|length > 0 %}
+    <style>
+        th:hover {
+            cursor: pointer;
+            cursor: hand;
+        }
+    </style>
+    <div>
+        <table class="table table-condensed table-striped table-hover">
+            <tr>
+                {% for field, column in columns %}
+                    <th class="order pointer {{ order.field == field ? 'info active-order' : 'success' }}" data-order="{{ field }}_{{ order.type }}">{{ column.label }}
+                        {% if column.sort %}
+                              {{ order.field == field ? (order.type == 'asc' ? '<i class="fa fa-long-arrow-down"></i>' : '<i class="fa fa-long-arrow-up"></i>') : '' }}
+                        {% endif %}
+                    </th>
+                {% endfor %}
+            </tr>
+            {% for client in clients %}
+                <tr>
+                    <td><a href="{{ path('client_edit', {id: client.id}) }}">{{ client.name }}</a></td>
+                    <td>{{ client.locality }}</td>
+                    <td>{{ client.fromUmcs ? 'Tak' : 'Nie' }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div>
+        <ul class="pagination">
+            {% for i in 1..pageCount %}
+                <li class="pagination-li {{ pageNr == i ? 'active' : '' }}" data-page="{{ i }}"><a href="#">{{ i }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <p>Brak wyników</p>
+{% endif %}

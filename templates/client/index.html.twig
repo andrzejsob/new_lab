@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ClientController!{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12 col-lg-2">
+            <form id="filter-form" action="{{ path('client_ajax') }}" method="post">
+                <p>Filtry:</p>
+                {% for table, fields in filters %}
+                    {% for field, values in fields %}
+                        {% for singleValue in values %}
+                            <div class="{{ singleValue.type }}">
+                                <label><input type="{{ singleValue.type }}" name="filters[{{ table }}][{{ field }}][]"
+                                              value="{{ singleValue.value }}">
+                                    {{ singleValue.label }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+                <button type="submit" class="btn btn-success table-refresh">Zastosuj</button>
+            </form>
+        </div>
+        <div class="col-xs-12 col-lg-10 index-table">
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            'use strict';
+
+            const loadTable = function ($form, $pagination) {
+                $('.pagination-li').removeClass('active');
+
+                if ($pagination != undefined) {
+                    $pagination.addClass('active');
+                } else {
+                    $('.pagination-li:first').addClass('active');
+                }
+
+                var formData = $form.serializeArray();
+                var perPage = $('.pagination-li.active:first').length ? $('.pagination-li.active:first').data('page') : 1;
+                if ($('th.active-order').length) {
+                    formData.push({name: 'order', value: $('th.active-order').data('order')});
+                }
+                formData.push({name: 'pageNr', value: perPage});
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    method: 'post',
+                    data: formData,
+                    success: function (result) {
+                        $('.index-table').html(result);
+                    }
+                });
+                return false;
+            };
+
+            loadTable($('#filter-form'));
+
+            $(document).on('click', '.pagination-li', function () {
+                loadTable($('#filter-form'), $(this));
+            });
+
+            $(document).on('click', '.order', function () {
+                let order = $(this).data('order');
+                let orderIconClass = 'fa-long-arrow-up';
+
+                if ($(this).hasClass('active-order')) {
+                    if (order.indexOf('asc') != -1) {
+                        order = order.replace('asc', 'desc');
+                        orderIconClass = 'fa-long-arrow-down';
+                    } else {
+                        order = order.replace('desc', 'asc');
+                    }
+
+                    $(this).data("order", order);
+                }
+
+                $(this).siblings().removeClass('active-order');
+                $(this).addClass('active-order');
+
+                $('th').remove('i');
+                $(this).append('<i class="fa ' + orderIconClass + '"></i>');
+
+                loadTable($('#filter-form'));
+            });
+
+            $('#filter-form').on('submit', function (event) {
+                event.preventDefault();
+                loadTable($('#filter-form'));
+            });
+        });
+    </script>
+{% endblock %}

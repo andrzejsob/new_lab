@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <nav class="navbar navbar-inverse">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="{{ path('client_edit', {id: clientId}) }}">Dane</a></li>
+            {% if clientId is not null %}
+                <li><a href="#">Osoby kontaktowe</a></li>
+                <li><a href="#">Zlecenia</a></li>
+                <li><a href="#">Próbki</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script>
+            $(function () {
+                $('tr').on('click', function (e) {
+                    var $itemRadio = $(this).find('[name="item"]');
+                    $itemRadio.prop("checked", true);
+                });
+            });
+        </script>
+    {% endblock %}
