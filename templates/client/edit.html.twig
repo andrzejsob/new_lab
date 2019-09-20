@@ -2,14 +2,16 @@
 {% block body %}
 
     <nav class="navbar navbar-inverse">
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="{{ path('client_edit', {id: clientId}) }}">Dane</a></li>
-            {% if clientId is not null %}
-                <li><a href="#">Osoby kontaktowe</a></li>
-                <li><a href="#">Zlecenia</a></li>
-                <li><a href="#">Próbki</a></li>
-            {% endif %}
-        </ul>
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{ path('client_edit', {id: clientId}) }}">Dane</a></li>
+                {% if clientId is not null %}
+                    <li><a href="#">Osoby kontaktowe</a></li>
+                    <li><a href="#">Zlecenia</a></li>
+                    <li><a href="#">Próbki</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </nav>
 
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}

@@ -9,7 +9,7 @@
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         <link rel="stylesheet" href="/css/application.css">
-        {#        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">#}
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {% endblock %}
@@ -38,7 +38,7 @@
                 <li><a href="#">Zlecenia</a></li>
                 <li><a href="#">Próbki</a></li>
                 <li class="dropdown {{ route in ['client_list', 'client_edit'] ? 'active' }}">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">Klienci
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Klienci
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
@@ -48,6 +48,9 @@
                                 klienta</a></li>
                     </ul>
                 </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ path('app_logout') }}"><i class="fa fa-sign-out"></i> Wyloguj</a></li>
             </ul>
         </div>
     </div>
